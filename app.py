@@ -4,6 +4,14 @@ from gemini import generate
 st.set_page_config(page_title="AI ライティングツール", page_icon="✍️", layout="wide")
 
 st.sidebar.title("✍️ AI ライティングツール")
+
+api_key_input = st.sidebar.text_input(
+    "Google API キー",
+    type="password",
+    placeholder="お持ちのGemini APIキーを入力（任意）",
+    help="入力しない場合は、サーバー側の .env に設定されたキーを使用します。キーはセッション内でのみ保持され、保存されません。",
+)
+
 st.sidebar.markdown("---")
 
 TOOLS = {
@@ -74,7 +82,7 @@ if tool == "blog":
 4. FAQ
 
 Markdown形式で出力してください。"""
-            result = generate(prompt)
+            result = generate(prompt, api_key=api_key_input.strip() or None)
         result_area(result)
 
 
@@ -109,7 +117,7 @@ elif tool == "email":
 - 追加で伝えたいこと: {note if note else "特になし"}
 
 件名の提案も含めて、実際に送信できる返信メールの全文を作成してください。"""
-            result = generate(prompt)
+            result = generate(prompt, api_key=api_key_input.strip() or None)
         result_area(result)
 
 
@@ -137,7 +145,7 @@ elif tool == "summary":
 - 要約スタイル: {summary_style}
 
 指定した条件に従って要約してください。"""
-            result = generate(prompt)
+            result = generate(prompt, api_key=api_key_input.strip() or None)
         result_area(result)
 
 
@@ -164,7 +172,7 @@ elif tool == "proofread":
 {chr(10).join(f"- {o}" for o in fix_options)}
 
 まず修正点の一覧を箇条書きで示し、その後に改善後の全文を出力してください。"""
-            result = generate(prompt)
+            result = generate(prompt, api_key=api_key_input.strip() or None)
         result_area(result)
 
 
@@ -196,7 +204,7 @@ elif tool == "sns":
 - 絵文字: {"積極的に使う" if emoji_use else "使わない"}
 
 {platform}の文字数制限や特徴に合わせた投稿文を作成してください。複数のバリエーション（3案）を提案してください。"""
-            result = generate(prompt)
+            result = generate(prompt, api_key=api_key_input.strip() or None)
         result_area(result)
 
 
@@ -229,7 +237,7 @@ elif tool == "title":
 - スタイル: {", ".join(title_style) if title_style else "制限なし"}
 
 読者がクリックしたくなる魅力的な{title_type}を提案してください。"""
-            result = generate(prompt)
+            result = generate(prompt, api_key=api_key_input.strip() or None)
         result_area(result)
 
 
@@ -257,7 +265,7 @@ elif tool == "tone":
 - 変換後の文体: {to_tone}
 
 内容・意味は変えずに、指定した文体に変換した文章を出力してください。"""
-            result = generate(prompt)
+            result = generate(prompt, api_key=api_key_input.strip() or None)
         result_area(result)
 
 
@@ -295,5 +303,5 @@ elif tool == "catchcopy":
 - 使用用途: {use_case}
 
 短くて記憶に残る、インパクトのあるキャッチコピーを{copy_count}案提案してください。各案に一言コメントも添えてください。"""
-            result = generate(prompt)
+            result = generate(prompt, api_key=api_key_input.strip() or None)
         result_area(result)
